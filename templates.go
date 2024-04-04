@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os/exec"
 )
@@ -52,4 +53,13 @@ func getTemplatesFromFlake(flake string) []Template {
 	}
 
 	return templates
+}
+
+func flakeInit(template Template) (string, error) {
+	flake := template.Source
+	name := template.Name
+
+	cmd := exec.Command("nix", "flake", "init", "-t", fmt.Sprintf("%s#%s", flake, name))
+	output, err := cmd.Output()
+	return string(output), err
 }

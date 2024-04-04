@@ -1,12 +1,22 @@
 package main
 
-import ()
+import (
+	"fmt"
+	"os"
+
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 func main() {
-	for _, template := range getTemplates() {
-		println("Description:", template.Source)
-		println("Name:", template.Name)
-		println("Description:", template.Description)
-		println()
+	templates := getTemplates()
+
+	m := model{list: initList(templates)}
+	m.list.Title = "Nixt"
+
+	p := tea.NewProgram(m, tea.WithAltScreen())
+
+	if _, err := p.Run(); err != nil {
+		fmt.Println("Error running program:", err)
+		os.Exit(1)
 	}
 }
